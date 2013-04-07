@@ -51,31 +51,39 @@ public class CommandProcessor {
 
 
 			if (MultiServer.selectedClients.contains(Utils.obtainMyName())){
-				//Utils.getMySource().getSo().doWait();
-				writer.println("You've been selected for game, there will be " + Utils.getMySource().getIterations() + " questions");
-
 				CommandProcessorThread thisThread = (CommandProcessorThread)Thread.currentThread();
 				SyncObj so = thisThread.getSource().getSo();
-				Map<String, String> gamePares = MultiServer.gamePares;
-				partyName = gamePares.get(Utils.obtainMyName());
-
-				for(int i=0; i<Utils.getMySource().getIterations()-1; i++){
-
-					GameFlow.answerAndAsk(writer, reader);
-					so.doWait();
+				//Utils.getMySource().getSo().doWait();
+				writer.println("You've been selected for game, would you participate? Y/N");
+				String YN = reader.readLine();
+				if(YN.equals("n") || YN.equals("N")){
+					MultiServer.selectedClients.remove(Utils.obtainMyName());
+					so.doNotify();
 				}
-				answer(writer, reader);
-				so.doNotify();
-				showEvr(writer, reader, partyName, Utils.obtainMyName());
-				//	saveResults(writer, reader);
-				//if (!goOn(writer, reader)){
-				goOn(writer, reader);
-			//	return;
-			//	}
-				so.doWait();
-				cleanUp();
-			}
+				else{
+					so.doNotify();
+					so.doWait();
+					writer.println("You've accept the game, there will be " + Utils.getMySource().getIterations() + " questions");					
+					Map<String, String> gamePares = MultiServer.gamePares;
+					partyName = gamePares.get(Utils.obtainMyName());
 
+					for(int i=0; i<Utils.getMySource().getIterations()-1; i++){
+
+						GameFlow.answerAndAsk(writer, reader);
+						so.doWait();
+					}
+					answer(writer, reader);
+					so.doNotify();
+					showEvr(writer, reader, partyName, Utils.obtainMyName());
+					//	saveResults(writer, reader);
+					//if (!goOn(writer, reader)){
+					goOn(writer, reader);
+					//	return;
+					//	}
+					//	so.doWait();
+					cleanUp();
+				}
+			}
 			writer.println("Write command:");
 			inputLine = reader.readLine();
 		}
@@ -137,7 +145,7 @@ public class CommandProcessor {
 		Map<String, String> gamePares = MultiServer.gamePares;
 		if (clients.containsKey(name)){
 			if(name.equals(Utils.obtainMyName())){
-				pw.println("It'gameResultAsString yours name, choose another gamer!");	
+				pw.println("It'yours name, choose another gamer!");	
 				return;
 			}
 			List<String> sc = MultiServer.selectedClients;
@@ -159,6 +167,13 @@ public class CommandProcessor {
 			CommandProcessorThread anotherThread = (CommandProcessorThread)clients.get(name); 
 			anotherThread.setSource(s);
 			sc.add(name);
+			s.getSo().doWait();
+			if(!sc.contains(name)){
+				pw.println("Client rejected the game, chose another partner!");
+				return;
+			}
+				
+				
 			pw.println("Client have been choosen");
 
 			GameFlow gf = new GameFlow(pw, br);

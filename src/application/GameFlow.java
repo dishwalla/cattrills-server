@@ -49,7 +49,6 @@ public class GameFlow {
 		CommandProcessor.showEvr(writer, breader, Utils.obtainMyName(), gamePares.get(Utils.obtainMyName()));
 		so.doNotify();
 		CommandProcessor.goOn(writer, breader);
-		
 	//	CommandProcessor.saveResults(writer, breader);
 		CommandProcessor.cleanUp();
 	}
