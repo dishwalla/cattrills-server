@@ -49,6 +49,10 @@ public class MultiServer {
 			out.println("Write your name: ");
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			String name = in.readLine().toUpperCase();
+			while (name.contains(" ")){
+				out.println("You shouldn't put the space to your name, try again!");
+				name = in.readLine().toUpperCase();
+			}
 			while (clients.containsKey(name)){
 				out.println("This name already exists, choose another:");
 				name = in.readLine().toUpperCase();

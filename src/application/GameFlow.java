@@ -75,7 +75,7 @@ public class GameFlow {
 		if(list.size() == 0) {so.doWait();}
 		Remember r = list.get(list.size()-1);
 		String s = r.getQuestion();
-		writer.println("The question is: " + CommandProcessor.firstWord(s)+ ", write your answer");
+		writer.println("The question is: " + CommandProcessor.firstWord(s).toUpperCase() + ", write your answer");
 		String ans = breader.readLine();
 		r.setAnswer(ans);
 		Remember r1 = new Remember();
