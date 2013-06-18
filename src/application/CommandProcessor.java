@@ -132,10 +132,10 @@ public class CommandProcessor {
 	public void list(PrintWriter pw){
 
 		Map<String, Thread> clients = MultiServer.clients;
-		int i = 0;
+		//int i = 0;
 		for(String key : clients.keySet()){
 			pw.write(key + "\t");
-			i++;
+		//	i++;
 		}
 		/*int i = 1;
 		for(String key : clients.keySet()){

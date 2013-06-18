@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-//import domain.Source;
 
 public class MultiServer {
 
@@ -49,12 +48,8 @@ public class MultiServer {
 			out.println("Write your name: ");
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			String name = in.readLine().toUpperCase();
-			while (name.contains(" ")){
-				out.println("You shouldn't put the space to your name, try again!");
-				name = in.readLine().toUpperCase();
-			}
-			while (clients.containsKey(name)){
-				out.println("This name already exists, choose another:");
+			while (clients.containsKey(name) || name.contains(" ")){
+				out.println("This name already exists, or contains space choose another:");
 				name = in.readLine().toUpperCase();
 			}
 			out.println("Your name've been chosen");
