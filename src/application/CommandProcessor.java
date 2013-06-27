@@ -175,6 +175,7 @@ public class CommandProcessor {
 			CommandProcessorThread anotherThread = (CommandProcessorThread)clients.get(name); 
 			anotherThread.setSource(s);
 			sc.add(name);
+			sc.add(Utils.obtainMyName()); //NEW!!!
 			s.getSo().doWait();
 			if(!sc.contains(name)){
 				pw.println("Client rejected the game, chose another partner!");
@@ -200,7 +201,7 @@ public class CommandProcessor {
 		List<Remember> list = source.getGameData();
 		Remember r = list.get(list.size()-1);
 		String s = r.getQuestion();
-		pw.println("The question is: "  + CommandProcessor.firstWord(s).toUpperCase() + ", write your answer");
+		pw.println("The question is: "  + CommandProcessor.firstWord(s).toUpperCase() + "?" + ", write your answer");
 		String ans = br.readLine();
 		r.setAnswer(ans);
 		pw.println("\n");
@@ -217,8 +218,8 @@ public class CommandProcessor {
 		//askN = partyName;
 
 		for(Remember r : list){
-			s += askN + " asks for: " + r.getQuestion() + "\n";
-			s += ansN + " answers: " + r.getAnswer() + "\n";
+			s += askN + " : " + r.getQuestion() + "?" + "\n";
+			s += ansN + " : " + r.getAnswer() + "." + "\n";
 			temp = askN;
 			askN = ansN;
 			ansN = temp;
