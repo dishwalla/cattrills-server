@@ -3,6 +3,7 @@ package application;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -44,11 +45,10 @@ public class MultiServer {
 			String hostname = addr.getHostName(); // server'gameResultAsString name*/
 			System.out.println(host);
 
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+			PrintWriter out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(),"UTF-8"), true);
 			out.println("Write your name: ");
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
 			String name = in.readLine().toUpperCase();
-			//String namen = new String(name.getBytes("Cp1251"));
 			while (clients.containsKey(name) || name.contains(" ")){
 				out.println("This name already exists, or contains space choose another:");
 				name = in.readLine().toUpperCase();

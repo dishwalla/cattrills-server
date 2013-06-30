@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -31,8 +32,8 @@ public class CommandProcessor {
 	}
 
 	public void process() throws Exception {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in)); 
-		PrintWriter writer = new PrintWriter(out, true);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8")); 
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"), true);
 		//writer.println("Write command('List' for check gamers, 'Select' to choose with whom to play):");
 		String inputLine; 
 		inputLine = reader.readLine();
