@@ -123,7 +123,7 @@ public class CommandProcessor {
 			}
 			str2 += chars[j];
 		}
-		String[] CompQ = {"v", "vo", "k", "o", "c", "gameResultAsString", "y", "u"};
+		String[] CompQ = {"v", "vo", "k", "o", "c", "y", "u", "po", "ot", "dlya", "na", "s", "в", "во", "к", "о", "с", "у", "по", "от", "для", "на"};
 		List<String> wordList = Arrays.asList(CompQ);
 		String newStr = str2.toString();
 		if ( wordList.contains(newStr)){

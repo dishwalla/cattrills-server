@@ -34,39 +34,35 @@ public class MultiServer {
 		}
 
 		while (listening){
+				Socket clientSocket = serverSocket.accept();
+				//Socket client = serverSocket.close();
+				//String ad = clientSocket.getInetAddress().getHostAddress();
+				InetAddress add = clientSocket.getInetAddress();
+				String host = add.getHostName();
 
-			Socket clientSocket = serverSocket.accept();
-			//Socket client = serverSocket.close();
-			//String ad = clientSocket.getInetAddress().getHostAddress();
-			InetAddress add = clientSocket.getInetAddress();
-			String host = add.getHostName();
-
-			/*InetAddress addr = clientSocket.getLocalAddress();
+				/*InetAddress addr = clientSocket.getLocalAddress();
 			String hostname = addr.getHostName(); // server'gameResultAsString name*/
-			System.out.println(host);
+				System.out.println(host);
 
-			PrintWriter out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(),"UTF-8"), true);
-			out.println("Write your name: ");
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
-			String name = in.readLine().toUpperCase();
-			while (clients.containsKey(name) || name.contains(" ")){
-				out.println("This name already exists, or contains space choose another:");
-				name = in.readLine().toUpperCase();
-			}
-			out.println("Your name've been chosen");
-			CommandProcessorThread clientThread = new CommandProcessorThread(clientSocket);
-			clientThread.setMyName(name);
-			clientThread.setMachineName(host);
-			clients.put(name, clientThread);
+				PrintWriter out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(),"UTF-8"), true);
+				out.println("Write your name: ");
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
+				String name = in.readLine().toUpperCase();
+				while (clients.containsKey(name) || name.contains(" ")){
+					out.println("This name already exists, or contains space choose another:");
+					name = in.readLine().toUpperCase();
+				}
+				out.println("Your name've been chosen");
+				CommandProcessorThread clientThread = new CommandProcessorThread(clientSocket);
+				clientThread.setMyName(name);
+				clientThread.setMachineName(host);
+				clients.put(name, clientThread);
 
-			clientThread.start();
-			System.out.println("New client " + name + " connected!");
+				clientThread.start();
+				System.out.println("New client " + name + " connected!");
 
 		}
-
-
 	}
-
 }
 
 
