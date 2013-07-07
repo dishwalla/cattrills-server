@@ -32,14 +32,11 @@ public class CommandProcessor {
 	}
 
 	public void process() throws Exception {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8")); 
+		BufferedReader reader = new BRWithNullHandling(new InputStreamReader(in, "UTF-8")); 
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"), true);
-		//writer.println("Write command('List' for check gamers, 'Select' to choose with whom to play):");
 		String inputLine; 
 		inputLine = reader.readLine();
-		//source.setIfFinish(false);
 		while (inputLine != null){
-			//while (source.getIfFinish() != true){
 			if(inputLine.equals("list")){
 				System.out.println(inputLine);
 				list(writer);
@@ -53,7 +50,6 @@ public class CommandProcessor {
 				System.out.println(inputLine);
 				writer.println("Unrecognized command");
 			}
-
 
 			if (MultiServer.selectedClients.contains(Utils.obtainMyName())){
 				CommandProcessorThread thisThread = (CommandProcessorThread)Thread.currentThread();
@@ -123,7 +119,7 @@ public class CommandProcessor {
 			}
 			str2 += chars[j];
 		}
-		String[] CompQ = {"v", "vo", "k", "o", "c", "y", "u", "po", "ot", "dlya", "na", "s", "в", "во", "к", "о", "с", "у", "по", "от", "дл€", "на"};
+		String[] CompQ = {"v", "vo", "k", "o", "c", "y", "u", "po", "ot", "dlya", "na", "s", "в", "во", "к", "о", "с", "у", "по", "от", "для", "на"};
 		List<String> wordList = Arrays.asList(CompQ);
 		String newStr = str2.toString();
 		if ( wordList.contains(newStr)){
@@ -183,6 +179,7 @@ public class CommandProcessor {
 			s.getSo().doWait();
 			if(!sc.contains(name)){
 				pw.println("Client rejected the game, chose another partner!");
+				MultiServer.selectedClients.remove(Utils.obtainMyName());
 				return;
 			}
 
@@ -323,14 +320,18 @@ public class CommandProcessor {
 		source.getGameData().clear();
 	}
 
-	public static void closeConnection() throws IOException{
-		CommandProcessorThread thisThread = (CommandProcessorThread)Thread.currentThread();
-		Map<String, Thread> clients = MultiServer.clients;
-		String name = Utils.obtainMyName();
-		clients.remove(name);
-		System.out.println("Client " + name + " disconnected!");
-		thisThread.interrupt();
-		thisThread.clientSocket.close();
+	public static void closeConnection(){
+		try {
+			CommandProcessorThread thisThread = (CommandProcessorThread)Thread.currentThread();
+			Map<String, Thread> clients = MultiServer.clients;
+			String name = Utils.obtainMyName();
+			clients.remove(name);
+			System.out.println("Client " + name + " disconnected!");
+			thisThread.interrupt();
+			thisThread.clientSocket.close();}
+		catch(Exception e){
+			System.err.println(e);
+		}
 	}
 
 
